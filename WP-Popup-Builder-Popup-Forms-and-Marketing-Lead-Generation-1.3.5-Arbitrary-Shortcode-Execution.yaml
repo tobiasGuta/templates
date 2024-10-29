@@ -26,8 +26,6 @@ info:
     fofa-query: body="/wp-content/plugins/wp-popup-builder/"
   tags: cve,cve2024,wp,wordpress,wp-plugin,wp-popup-builder,shortcode
 
-flow: http(1) && http(2)
-
 http:
   - raw:
       - |
@@ -40,7 +38,6 @@ http:
           - 'contains(body, "/wp-content/plugins/wp-popup-builder")'
           - 'status_code == 200'
         condition: and
-        internal: true
 
   - raw:
       - |
@@ -58,4 +55,3 @@ http:
           - 'contains(content_type, "text/html")'
           - 'status_code == 200'
         condition: and
-# digest: 4b0a00483046022100f80fec38e7c5f649695bac35530600b4fbfa1daa9782d746571908c193ec333d022100f9b434ac3748d54c493f2ad2d7bf045e53c97e1abd079858c054b0ce2f03e0e5:922c64590222798bb761d5b6d8e72950
