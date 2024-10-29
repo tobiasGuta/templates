@@ -26,8 +26,6 @@ info:
     fofa-query: body="/wp-content/plugins/time-clock/" || body="/wp-content/plugins/time-clock-pro/"
   tags: cve,cve2024,time-clock,wp,wordpress,wp-plugin,rce,time-clock-pro
 
-flow: http(1) && http(2)
-
 http:
   - raw:
       - |
@@ -40,7 +38,6 @@ http:
           - 'contains(body, "/wp-content/plugins/time-clock")'
           - 'status_code == 200'
         condition: and
-        internal: true
 
   - raw:
       - |
@@ -69,4 +66,3 @@ http:
         group: 1
         regex:
           - '>PHP Version <\/td><td class="v">([0-9.]+)'
-# digest: 4a0a00473045022065893bee95b4cb863eb698bc33aef1849b6971633dc55d38e63de16d89b20d8e022100916a86a5a8ba50bef07761ba790afe74cf0ab95d95dfc115f03e95f72a607648:922c64590222798bb761d5b6d8e72950
