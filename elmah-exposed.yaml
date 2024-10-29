@@ -1,0 +1,30 @@
+id: elmah-exposed
+
+info:
+  name: ELMAH Error Log Exposure
+  severity: high
+  author: YourNameHere  # Replace with your name or handle
+  description: |
+    Checks for exposed elmah.axd endpoint in ASP.NET applications.
+
+requests:
+  - method: GET
+    path:
+      - '{{BaseURL}}/elmah.axd'
+    headers:
+      User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:55.0) Gecko/20100101 Firefox/55
+    matchers-condition: and
+    matchers:
+      - type: status
+        status:
+          - 200
+      - type: word
+        words:
+          - "Error Log"  # Common text found in the ELMAH error log page
+          - "Log"        # Another common word that might be in the response
+    extractors:
+      - type: regex
+        part: body
+        group: 1
+        regex:
+          - "<title>(.*?)</title>"  # Extract the title from the response for further validation (optional)
