@@ -3,14 +3,15 @@ id: elmah-exposed
 info:
   name: ELMAH Error Log Exposure
   severity: high
-  author: YourNameHere  # Replace with your name or handle
+  author: tobiasGuta
   description: |
-    Checks for exposed elmah.axd endpoint in ASP.NET applications.
+    Checks for exposed elmah.axd endpoint in ASP.NET applications, including the root and subdirectories.
 
 requests:
   - method: GET
     path:
-      - '{{BaseURL}}/elmah.axd'
+      - '{{BaseURL}}/elmah.axd'            # Check for elmah.axd at the root
+      - '{{BaseURL}}/**/elmah.axd'          # Check for elmah.axd in any subdirectory
     headers:
       User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:55.0) Gecko/20100101 Firefox/55
     matchers-condition: and
