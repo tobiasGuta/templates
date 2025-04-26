@@ -1,0 +1,30 @@
+id: reflected-param-headless
+info:
+  name: Reflected Parameter Value via Headless Browser
+  author: YourName
+  severity: info
+  tags: "xss,reflection,headless"
+  description: |
+    Uses a headless browser to inject a marker into a specified URL parameter 
+    and detect if the marker is reflected in the page's HTML content.
+variables:
+  marker: "shelledxsstest"        # Marker string to inject (customize as needed)
+  param: "searchgov"               # Parameter name to test for reflection
+headless:
+  - steps:
+      - action: navigate
+        args:
+          url: "{{BaseURL}}?{{param}}={{marker}}"  # Navigate to target with injected param
+      - action: waitload          # Wait for full page load (HTML, images, etc.)&#8203;:contentReference[oaicite:4]{index=4}
+      - action: waitidle          # Wait until network is idle (no ongoing requests)
+    matchers-condition: and
+    matchers:
+      - type: word
+        part: body
+        words:
+          - "{{marker}}"         # Check if the marker appears in the page content
+      - type: word
+        part: header
+        words:
+          - "text/html"          # Ensure the response is HTML content (page body)
+    stop-at-first-match: true    # Optional: stop if reflection is found (useful if fuzzing multiple payloads)
