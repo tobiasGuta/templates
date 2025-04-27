@@ -5,17 +5,14 @@ info:
   severity: high
   author: tobiasGuta
   description: |
-    Checks for exposed elmah.axd endpoint in ASP.NET applications, both at the root and in subdirectories using a custom wordlist.
+    Checks for exposed elmah.axd endpoint in ASP.NET applications at the root.
 
 requests:
   - method: GET
     path:
-      - '{{BaseURL}}/elmah.axd'          # Check at root
-      - '{{BaseURL}}/{{subdir}}/elmah.axd'  # Check in subdirectories from wordlist
+      - '{{BaseURL}}/elmah.axd'  # Only check at root
     headers:
       User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:55.0) Gecko/20100101 Firefox/55
-    payloads:
-      subdir: /path/to/your/wordlist.txt  # Specify the path to your wordlist
     matchers-condition: and
     matchers:
       - type: status
