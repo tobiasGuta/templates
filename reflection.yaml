@@ -1,7 +1,7 @@
 id: reflected-param-headless
 info:
   name: Reflected Parameter Value via Headless Browser
-  author: YourName
+  author: Me
   severity: info
   tags: "xss,reflection,headless"
   description: |
