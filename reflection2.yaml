@@ -1,0 +1,30 @@
+id: reflected-param-headless-v1-fixed
+info:
+  name: Reflected Parameter Value - Headless Detection Only (Fixed)
+  author: Operator_X
+  severity: info
+  tags: "xss,reflection,headless"
+  description: |
+    Detects parameter reflection using a harmless marker. Pre-attack phase.
+
+variables:
+  marker: "shelledxsstest"
+
+headless:
+  - steps:
+      - action: navigate
+        args:
+          url: "{{BaseURL}}"  # <-- ONLY navigate to the URL you pass
+      - action: waitload
+      - action: waitidle
+    matchers-condition: and
+    matchers:
+      - type: word
+        part: body
+        words:
+          - "{{marker}}"
+      - type: word
+        part: header
+        words:
+          - "text/html"
+    stop-at-first-match: true
