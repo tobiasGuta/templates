@@ -1,0 +1,89 @@
+id: sqlinjection_error
+
+info:
+  name: sqlinjection
+  author: Tobias
+  severity: High
+
+requests:
+  - method: GET
+    path:
+      - "{{BaseURL}}"
+
+    extractors:
+      - type: regex
+        name: MySQL_Errors
+        part: body
+        regex:
+          - 'SQL syntax.*MySQL'
+          - 'Warning.*mysql_.*'
+          - 'valid MySQL result'
+          - 'MySqlClient\.'
+          - 'mysqli_error'
+          - 'mysqli_query'
+          - 'MySQLSyntaxErrorException'
+          - 'check the manual that (corresponds to|fits) your MySQL server version'
+          - 'Unknown column ''[^ ]+'' in ''field list'''
+          - 'Zend_Db_(Adapter|Statement)_Mysqli_Exception'
+          - 'Pdo[./_\\]Mysql'
+          - 'MySqlException'
+          - 'SQLSTATE\[\d+\]: Syntax error or access violation'
+
+      - type: regex
+        name: PostgreSQL_Errors
+        part: body
+        regex:
+          - 'PostgreSQL.*ERROR'
+          - 'Warning.*Wpg_.*'
+          - 'valid PostgreSQL resultNpgsql\.'
+
+      - type: regex
+        name: Microsoft_Access_Errors
+        part: body
+        regex:
+          - 'Microsoft Access Driver'
+          - 'JET Database Engine'
+          - 'Access Database Engine'
+
+      - type: regex
+        name: Oracle_Errors
+        part: body
+        regex:
+          - 'ORA-[0-9]{4}'
+          - 'Oracle error'
+          - 'Oracle.*Driver'
+          - 'Warning.*Woci_.*'
+          - 'Warning.*Wora_.*'
+
+      - type: regex
+        name: DB2_Errors
+        part: body
+        regex:
+          - 'CLI Driver.*DB2'
+          - 'DB2 SQL error'
+          - 'bdb2_w+'
+
+      - type: regex
+        name: SQLite_Errors
+        part: body
+        regex:
+          - 'SQLite/JDBCDriver'
+          - 'SQLite.Exception'
+          - 'System.Data.SQLite.SQLiteException'
+          - 'Warning.*sqlite_.*'
+          - 'Warning.*SQLite3::'
+          - 'SQLITE_ERROR'
+
+      - type: regex
+        name: Sybase_Errors
+        part: body
+        regex:
+          - '(?i)Warning.*sybase.*'
+          - 'Sybase message'
+          - 'Sybase.*Server message.*'
+
+      - type: regex
+        name: MariaDB_Errors
+        part: body
+        regex:
+          - 'check the manual that (corresponds to|fits) your MariaDB server version'
