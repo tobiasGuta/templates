@@ -6,6 +6,7 @@ info:
   severity: critical
   description: Matches on instances vulnerable to CVE-2025-49113
   tags: roundcube,zeroday
+  reference: http.html:"Roundcube Webmail" country:US
 
 requests:
   - method: GET
