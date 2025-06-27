@@ -1,0 +1,42 @@
+id: login-sqli-detect
+
+info:
+  name: SQLi Detection on Login Forms
+  author: tobias-pwnz
+  severity: high
+  tags: sqli,login,web
+
+requests:
+  - method: POST
+    path:
+      - "{{BaseURL}}"  
+
+    headers:
+      Content-Type: application/x-www-form-urlencoded
+
+    body: "username=admin'&password=anything"
+
+    matchers-condition: or
+    matchers:
+      - type: word
+        words:
+          - "You have an error in your SQL syntax"
+          - "Warning: mysql_fetch_assoc()"
+          - "Unclosed quotation mark after the character string"
+          - "ODBC SQL Server Driver"
+          - "supplied argument is not a valid MySQL"
+          - "SQLSTATE"
+        condition: or
+
+      - type: status
+        status:
+          - 500
+          - 400
+
+    extractors:
+      - type: regex
+        part: body
+        regex:
+          - "(SQL syntax.*?MySQL)"
+          - "(Warning.*?on line)"
+          - "(Microsoft OLE DB Provider for SQL Server)"
